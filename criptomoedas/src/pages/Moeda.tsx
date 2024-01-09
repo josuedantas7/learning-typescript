@@ -79,7 +79,7 @@ const Moeda = () => {
                         </div>
                         <div className='flex gap-2'>
                             <h3 className='font-bold'>Variação 24h:</h3>
-                            {formatNumber(coin.delta_24h) > 0 ? <p className='text-center font-bold text-green-700'>{coin.delta_24h}</p> : <p className='text-center w-1/4 text-red-900 font-bold'>{coin.delta_24h}</p>}
+                            {formatNumber(coin.delta_24h) > 0 ? <p className='text-center font-bold text-green-700'>{coin.delta_24h}</p> : <p className='text-center text-red-900 font-bold'>{coin.delta_24h}</p>}
                         </div>
                         <div className='flex gap-2'>
                             <h3 className='font-bold'>Valor de mercado:</h3>
