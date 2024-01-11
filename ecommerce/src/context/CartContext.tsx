@@ -4,16 +4,12 @@ import { getAllProducts } from '../Utils/productsFunctions'
 
 import { Product } from '../types/interfaces'
 interface CartContextProps {
-    products: Product[];
-    addCart: (product: addCartProps) => void; // Update the type of the addCart function
-    cart: Product[];
+    products?: Product[];
+    addCart?: (product: Product) => void;
+    cart?: Product[];
 }
 
-interface addCartProps {
-    product: Product;
-}
-
-export const CartContext = createContext<CartContextProps>({ products: [], addCart: () => {}, cart: [] });
+export const CartContext = createContext<CartContextProps>({ products: [], cart: [] });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 
@@ -26,9 +22,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return setProducts(response as unknown as Product[]);
     }
 
-    function addCart(product : addCartProps ): void {
-        const newProduct = product.product
-        return setCart([...cart,newProduct])
+    function addCart(product : Product ): void {
+        return setCart([...cart,product])
     }
 
     useEffect(() => {
@@ -37,7 +32,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <CartContext.Provider value={{cart,products, addCart}}>
+        <CartContext.Provider value={{cart, products, addCart}}>
             {children}
         </CartContext.Provider> 
     )
