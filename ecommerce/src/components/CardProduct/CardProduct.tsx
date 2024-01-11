@@ -1,21 +1,12 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { IoCartOutline } from "react-icons/io5";
 import { CartContext } from '../../context/CartContext';
 import { Link } from 'react-router-dom';
 
-interface CardProductProps {
-    id: number;
-    title: string;
-    price: number;
-    cover: string;
-    description: string;
-}
+import { Product } from '../../types/interfaces'
 
-interface CardProductProps {
-    product: CardProductProps;
-}
 
-const CardProduct = ({ product }: CardProductProps) => {
+const CardProduct = ( {product} : Product ) => {
 
     const { addCart } = useContext(CartContext)
 
@@ -25,6 +16,10 @@ const CardProduct = ({ product }: CardProductProps) => {
           currency: "BRL",
         }).format(value);
     }
+
+    useEffect(() => {
+        console.log(product)
+    })
 
   return (
     <Link to={`produto/${product.id}`} className='w-[250px] h-[350px] relative hover:scale-105 duration-300'>

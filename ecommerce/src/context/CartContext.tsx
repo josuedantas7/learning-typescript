@@ -2,35 +2,33 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 
 import { getAllProducts } from '../Utils/productsFunctions'
 
-interface Product{
-    id : number,
-    title : string,
-    price : number,
-    cover: string,
-    description : string,
-}
-
+import { Product } from '../types/interfaces'
 interface CartContextProps {
     products: Product[];
-    addCart: (product: Product) => void;
+    addCart: (product: addCartProps) => void; // Update the type of the addCart function
     cart: Product[];
+}
+
+interface addCartProps {
+    product: Product;
 }
 
 export const CartContext = createContext<CartContextProps>({ products: [], addCart: () => {}, cart: [] });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 
-    const [products,setProducts] = useState<[]>([])
+    const [products,setProducts] = useState<Product[]>([])
     const [cart,setCart] = useState<Product[]>([]) 
 
     async function getProducts(){
         const response =  await getAllProducts()
         console.log(response)
-        setProducts(response)
+        return setProducts(response as unknown as Product[]);
     }
 
-    function addCart(product : Product ){
-        setCart([...cart,product])
+    function addCart(product : addCartProps ): void {
+        const newProduct = product.product
+        return setCart([...cart,newProduct])
     }
 
     useEffect(() => {
