@@ -7,6 +7,7 @@ export interface Product {
     price: number;
     category?: string;
     cover: string;
+    qtd?: number;
   }
 
 export interface CartContextProps {

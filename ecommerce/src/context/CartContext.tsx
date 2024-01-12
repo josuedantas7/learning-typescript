@@ -5,8 +5,11 @@ import { getAllProducts } from '../Utils/productsFunctions'
 import { Product } from '../types/interfaces'
 interface CartContextProps {
     products?: Product[];
-    addCart?: (product: Product) => void;
     cart?: Product[];
+    addCart?: (product: Product) => void;
+    removeCart?: (product: Product) => void;
+    setCart?: (product: Product[]) => void;
+    totalProducts?: number;
 }
 
 export const CartContext = createContext<CartContextProps>({ products: [], cart: [] });
@@ -23,7 +26,29 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     function addCart(product : Product ): void {
-        return setCart([...cart,product])
+        const productExists = cart.find((item) => item.id === product.id);
+        if (productExists) {
+            setCart(
+                cart.map((item) =>
+                    item.id === product.id ? { ...product, qtd: (item.qtd ?? 0) + 1 } : item
+                )
+            );
+        } else {
+            setCart([...cart, { ...product, qtd: 1 }]);
+        }
+    }
+
+    function removeCart(product : Product ): void {
+        const productExists = cart.find((item) => item.id === product.id);
+        if (productExists) {
+            setCart(
+                cart.map((item) =>
+                    item.id === product.id ? { ...product, qtd: (item.qtd ?? 0) - 1 } : item
+                )
+            );
+        } else {
+            setCart([...cart, { ...product, qtd: 1 }]);
+        }
     }
 
     useEffect(() => {
@@ -32,7 +57,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 
     return (
-        <CartContext.Provider value={{cart, products, addCart}}>
+        <CartContext.Provider value={{setCart,cart, products, addCart, removeCart}}>
             {children}
         </CartContext.Provider> 
     )
