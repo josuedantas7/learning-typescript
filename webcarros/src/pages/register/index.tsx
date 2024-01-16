@@ -4,7 +4,16 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { auth } from '../../services/firebaseConnection'
 import { createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth'
+import Toastfy from '../../components/Toast'
 
+
+interface ToastfyProps{
+  success?: boolean;
+  error?: boolean;
+  info?: boolean;
+  warning?: boolean;
+  message: string;
+}
 interface UserProps{
   name: string;
   email: string;
@@ -15,6 +24,13 @@ const Register = () => {
   const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [toastData, setToastData] = useState<ToastfyProps>({
+    success: false,
+    error: false,
+    info: false,
+    warning: false,
+    message: '',
+  });
 
   const navigate = useNavigate()
 
@@ -32,17 +48,20 @@ const Register = () => {
         displayName: data.name
       })
 
-      alert('Usuário cadastrado com sucesso!')
-      navigate('/dashboard', { replace: true })
+      setToastData({ success: true, message: 'Usuário cadastrado com sucesso!' });
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      },2000)
     }).catch((err) => {
       console.log(err)
-      alert('Algo deu errado, tente novamente!')
+      setToastData({ error: true, message: 'Algo deu errado, tente novamente!' });
     })
   }
 
   useEffect(() => {
     async function handleLogout(){
       await signOut(auth)
+      setToastData({ info: true, message: 'Usuário deslogado com sucesso!' });
     }
     handleLogout()
   },[])
@@ -62,6 +81,7 @@ const Register = () => {
           <span className='underline text-blue-900'><Link to={"/login"}>Faça login</Link></span>
         </div>
       </div>
+      <Toastfy {...toastData} />
   </div>
   )
 }
