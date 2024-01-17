@@ -49,7 +49,7 @@ export default function Home(){
       <InputSearch setSearch={setSearch}/>
       <div className="mt-8">
         <Title title="Carros novos e usados em todo o Brasil" center={true} secundary={true} />
-        <div className="flex mt-4 flex-wrap justify-between gap-3">
+        <div className="flex mt-4 flex-wrap justify-center gap-3">
           {cars.map((car) => {
             return (
               <CardCar
