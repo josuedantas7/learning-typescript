@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { signOut } from 'firebase/auth'
 import { auth } from '../../services/firebaseConnection'
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 
 const Header = () => {
 
@@ -32,7 +33,10 @@ const Header = () => {
         <Link to='/'>
           <img src={logo} />
         </Link>
-        {authenticated ? <MdLogout onClick={handleLogout}  className='text-3xl border-[1px] border-black rounded-full w-[40px] h-[40px] p-2'/> : <RxPerson className='text-3xl border-[1px] border-black rounded-full w-[40px] h-[40px] p-2' />}
+        <ThemeSwitcher />
+        {authenticated ? <MdLogout onClick={handleLogout}  className='text-3xl border-[1px] border-black rounded-full w-[40px] h-[40px] p-2'/> : (
+          <Link to="/login"><RxPerson className='text-3xl border-[1px] border-black rounded-full w-[40px] h-[40px] p-2' /></Link>
+        )}
     </div>
   )
 }
