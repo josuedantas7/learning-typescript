@@ -9,7 +9,8 @@ interface CartContextProps {
     addCart?: (product: Product) => void;
     removeCart?: (product: Product) => void;
     setCart?: (product: Product[]) => void;
-    totalProducts?: number;
+    setQtdTotal?: (qtd: number) => void;
+    qtdTotal?: number;
 }
 
 export const CartContext = createContext<CartContextProps>({ products: [], cart: [] });
@@ -17,7 +18,8 @@ export const CartContext = createContext<CartContextProps>({ products: [], cart:
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     const [products,setProducts] = useState<Product[]>([])
-    const [cart,setCart] = useState<Product[]>([]) 
+    const [cart,setCart] = useState<Product[]>([])
+    const [qtdTotal, setQtdTotal] = useState<number>(0)
 
     async function getProducts(){
         const response =  await getAllProducts()
@@ -52,12 +54,22 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     useEffect(() => {
+        if (cart){
+            let qtd = 0
+            cart.forEach((product) => {
+                qtd += product.qtd ?? 0
+            })
+            setQtdTotal && setQtdTotal(qtd)
+        } 
+    },[cart, setQtdTotal])
+
+    useEffect(() => {
         getProducts()
     },[])
 
 
     return (
-        <CartContext.Provider value={{setCart,cart, products, addCart, removeCart}}>
+        <CartContext.Provider value={{setCart,cart, products, addCart, removeCart, setQtdTotal, qtdTotal}}>
             {children}
         </CartContext.Provider> 
     )
