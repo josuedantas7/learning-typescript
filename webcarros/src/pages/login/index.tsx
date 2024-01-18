@@ -1,10 +1,11 @@
 import logo from '../../assets/logo.svg'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../../services/firebaseConnection';
 import { useNavigate } from 'react-router-dom';
 import Toastfy from '../../components/Toast';
+import { AuthContext } from '../../contexts/AuthContext';
 
 interface ToastfyProps {
   success?: boolean;
@@ -32,6 +33,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const { handleInfoUser } = useContext(AuthContext)
+
   function onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
 
@@ -43,6 +46,11 @@ const Login = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((user) => {
         setToastData({ success: true, message: 'Usuário logado com sucesso!' });
+        handleInfoUser({
+          email: user.user?.email,
+          uid: user.user?.uid,
+          name: user.user?.displayName,
+        })
         setTimeout(() => {
           navigate('/dashboard', { replace: true });
         },2000)
