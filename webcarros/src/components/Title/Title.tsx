@@ -1,16 +1,14 @@
-import React from 'react'
-
 interface TitleProps {
     primary?: boolean;
     secundary?: boolean;
     tertiary?: boolean;
     center?: boolean;
-    title: string;
+    title: string | number;
 }
 
-const Title = ({primary = false,secundary = false ,tertiary = false, title,center=false} : TitleProps) => {
+const Title = ({primary = false,secundary = false , title,center=false} : TitleProps) => {
   return (
-    <h1 className={`${center && 'text-center'} ${secundary && 'text-2xl font-bold'}`}>
+    <h1 className={`${center && 'text-center'} ${secundary && 'text-2xl font-bold'} ${primary && 'text-3xl font-bold'}`}>
         {title}
     </h1>
   )
