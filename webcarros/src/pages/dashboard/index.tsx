@@ -7,7 +7,7 @@ import { useNavigate  } from 'react-router-dom'
 
 import Toastfy from '../../components/Toast'
 import CardCar from '../../components/CardCar'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../services/firebaseConnection'
 
 interface ToastfyProps {
@@ -37,7 +37,8 @@ interface ImageCarProps{
 
 const Dashboard = () => {
   
-  const { user,signed } = useContext(AuthContext)
+  const { user,signed,loading } = useContext(AuthContext)
+
   const navigate = useNavigate()
   const [cars,setCars] = useState<CarProps[]>([])
   const [toastData, setToastData] = useState<ToastfyProps>({
@@ -49,14 +50,15 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    if (!signed) {
-      setToastData({ warning: true, message: 'Faça login para acessar essa página' });
-      setTimeout(() => {
-        navigate('/login')
-      },1000)
+    if (loading === false) {
+      if (!signed) {
+        setToastData({ warning: true, message: 'Faça login para acessar essa página' });
+        setTimeout(() => {
+          navigate('/')
+        },1000)
+      }
     }
-  },[navigate,signed])
-
+  },[loading,signed,navigate])
 
   useEffect(() => {
     function getCarros(){
@@ -86,6 +88,12 @@ const Dashboard = () => {
     getCarros()
   },[user])
 
+  async function handleDeleteCar(id: string){
+    const docRef = doc(db, "cars", id)
+    await deleteDoc(docRef);
+    setCars(cars.filter(car => car.id !== id))
+  }
+
   return (
     <div className='pt-4 h-[92vh] bg-gray-100'>
         <Header_Dashboard />
@@ -105,6 +113,7 @@ const Dashboard = () => {
                       city={car.city}
                       fotoCarro={car.images[0].url}
                       owner={true}
+                      handleDeleteCar={handleDeleteCar}
                     />
                   )
                 })}
@@ -113,7 +122,7 @@ const Dashboard = () => {
           ) : (
             <div className='flex flex-col items-center justify-center h-[80vh]'>
               <h1 className='text-2xl font-bold'>Você não possui nenhum carro cadastrado</h1>
-              <button onClick={() => navigate('/add-car')} className='mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg'>Adicionar carro</button>
+              <button onClick={() => navigate('/dashboard/new')} className='mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg'>Adicionar carro</button>
             </div>
           )}
         <Footer/>
