@@ -3,22 +3,19 @@ import CardCar from "../../components/CardCar/"
 import InputSearch from "../../components/InputSearch/"
 import Title from "../../components/Title/Title"
 
-import { collection, query, getDocs} from 'firebase/firestore'
+import { collection, query, getDocs, orderBy, where} from 'firebase/firestore'
 
 import { db } from '../../services/firebaseConnection'
+import { MdRunningWithErrors } from "react-icons/md"
 
-interface CarProps{
-  owner: string | null | undefined,
-  uid: string | undefined | null;
-  created: Date;
+interface CarsProps{
+  id: string;
   name: string;
-  model: string;
   year: string;
-  km: string;
-  price: string;
+  uid: string;
+  price: string | number;
   city: string;
-  whatsapp: string;
-  description: string;
+  km: string;
   images: ImageProps[];
 }
 
@@ -30,30 +27,90 @@ interface ImageProps{
 
 export default function Home(){
   
-  const [search,setSearch] = useState<string>('')
-  const [cars,setCars] = useState<CarProps[]>([])
+  const [input,setInput] = useState<string>('')
+  const [loadImages, setLoadImages] = useState<string[]>([])
+  const [cars,setCars] = useState<CarsProps[]>([])
 
   async function getCarros(){
-    const q = query(collection(db, "cars"))
-    const querySnapshot = await getDocs(q);
-    const cars = querySnapshot.docs.map(doc => doc.data() as CarProps)
-    setCars(cars)
+    const carsRef = collection(db, "cars")
+    const queryRef = query(carsRef, orderBy("created", "desc"))
+
+    getDocs(queryRef)
+    .then((snapshot) => {
+      const listcars = [] as CarsProps[];
+
+      snapshot.forEach( doc => {
+        listcars.push({
+          id: doc.id,
+          name: doc.data().name,
+          year: doc.data().year,
+          km: doc.data().km,
+          city: doc.data().city,
+          price: doc.data().price,
+          images: doc.data().images,
+          uid: doc.data().uid
+        })
+      })
+
+      setCars(listcars);  
+    })
   }
 
   useEffect(() => {
     getCarros()
   },[])
 
+  async function handleSearchCar(){
+    if(input === ''){
+      getCarros();
+      return;
+    }
+
+    setCars([]);
+    setLoadImages([]);
+
+    const q = query(collection(db, "cars"), 
+      where("name", ">=", input.toUpperCase()),
+      where("name", "<=", input.toUpperCase() + "\uf8ff")
+    )
+
+    const querySnapshot = await getDocs(q)
+
+    const listcars = [] as CarsProps[];
+
+    querySnapshot.forEach((doc) => {
+      listcars.push({
+        id: doc.id,
+        name: doc.data().name,
+        year: doc.data().year,
+        km: doc.data().km,
+        city: doc.data().city,
+        price: doc.data().price,
+        images: doc.data().images,
+        uid: doc.data().uid
+      })
+    })
+
+   setCars(listcars);
+
+  }
+
+  useEffect(() => {
+    if (input === ''){
+      getCarros();
+    }
+  },[input])
+
   return (
     <div className="pt-12 h-[92vh] bg-gray-100">
-      <InputSearch setSearch={setSearch}/>
+      <InputSearch handleSearchCar={handleSearchCar} input={input} setSearch={setInput}/>
       <div className="mt-8">
         <Title title="Carros novos e usados em todo o Brasil" center={true} secundary={true} />
         <div className="flex mt-4 flex-wrap justify-center gap-3">
           {cars.map((car) => {
             return (
               <CardCar
-                id={"1"}
+                id={car.id}
                 key={car.uid}
                 name={car.name}
                 year={car.year}
