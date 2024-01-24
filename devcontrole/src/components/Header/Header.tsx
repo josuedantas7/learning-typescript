@@ -9,9 +9,6 @@ const Header = () => {
 
   const { data: session, status } = useSession()
 
-
-  console.log(status)
-
   async function handleLogin(){
     await signIn()
   }
