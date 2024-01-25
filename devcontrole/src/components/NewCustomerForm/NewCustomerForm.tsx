@@ -12,6 +12,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { api } from '@/lib/api'
 
+import { useRouter } from 'next/navigation'
+import Notification from '../Notifier/Notification'
+import { revalidatePath } from 'next/cache'
+
 type CreateuserFormData = z.infer<typeof createUserFormSchema>
 
 interface UserProps{
@@ -43,16 +47,24 @@ const NewCustomerForm = ( {userId}:  { userId : string}) => {
         resolver: zodResolver(createUserFormSchema)
       })
 
+    const router = useRouter()
+
 
     async function onSubmit(data : UserProps){
-        const response = await api.post('/api/customer', {
-            name: data.name,
-            phone: data.tel,
-            email: data.email,
-            address: data.address,
-            userId: userId
-        })
-        console.log(response.data)
+        try {
+            await api.post('/api/customer', {
+                name: data.name,
+                phone: data.tel,
+                email: data.email,
+                address: data.address,
+                userId: userId
+            })
+            Notification('success', 'Cliente cadastrado com sucesso')
+            router.replace('/dashboard/customer')
+            router.refresh()
+        }catch{
+            Notification('error', 'Erro ao cadastrar cliente')
+        }
     }
 
 
