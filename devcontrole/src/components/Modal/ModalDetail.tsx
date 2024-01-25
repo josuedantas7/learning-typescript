@@ -5,7 +5,7 @@ import { IoNewspaperOutline } from "react-icons/io5";
 const ModalDetail = () => {
   return (
     <div>
-    <button onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement)?.showModal()}><IoNewspaperOutline className='text-blue-500' size={20}/></button>
+    <button onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement)?.showModal()}><IoNewspaperOutline className='text-blue-500 hover:scale-125 duration-500' size={20}/></button>
         <dialog id="my_modal_1" className="modal">
         <div className="bg-white border-2 modal-box flex flex-col items-start">
             <h3 className="font-bold text-xl">Detalhe do chamado</h3>

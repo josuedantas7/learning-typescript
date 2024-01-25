@@ -6,7 +6,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 const ModalDelete = () => {
   return (
     <div>
-    <button onClick={() => (document.getElementById('my_modal_2') as HTMLDialogElement)?.showModal()}><RiDeleteBin5Line className='text-red-500' size={20}/></button>
+    <button onClick={() => (document.getElementById('my_modal_2') as HTMLDialogElement)?.showModal()}><RiDeleteBin5Line className='text-red-500 hover:scale-125 duration-500' size={20}/></button>
         <dialog id="my_modal_2" className="modal">
         <div className="bg-white border-2 modal-box flex flex-col items-start">
             <h3 className="font-bold text-lg">Hello!</h3>
