@@ -3,24 +3,25 @@ import { Label } from "@/components/ui/label"
 
 interface InputWithLabelProps {
     label: string
-    onChange: (value: string) => void
+    register: any
+    field: string
     password?: boolean
     email?: boolean
     textarea?: boolean
 }
 
-export function InputWithLabel({label,onChange,password,email,textarea} : InputWithLabelProps) {
+export function InputWithLabel({label,register,field,password,email,textarea} : InputWithLabelProps) {
   return (
     <div className="flex flex-col w-full gap-3">
       <Label htmlFor={label}>{label}</Label>
       {password ? (
-          <Input type="password" id={label} placeholder={label} />
+          <Input {...register(field)} type="password" id={label} placeholder={label} />
         ): email ? (
-            <Input onChange={(e) => onChange(e.target.value)} type="email" id={label} placeholder={label} />
+            <Input {...register(field)} type="email" id={label} placeholder={label} />
         ): textarea ? (
-            <textarea className="border px-3 py-2 rounded-lg" style={{resize: "none"}} rows={3} onChange={(e) => onChange(e.target.value)} id={label} placeholder={label} />
+            <textarea className="border px-3 py-2 rounded-lg" style={{resize: "none"}} rows={3} {...register(field)} id={label} placeholder={label} />
         ) : (
-            <Input className="w-full" onChange={(e) => onChange(e.target.value)} type="text" id={label} placeholder={label} />
+            <Input className="w-full" {...register(field)} type="text" id={label} placeholder={label} />
         )}
     </div>
   )
