@@ -1,6 +1,6 @@
 import ModalDelete from '@/components/Modal/ModalDelete';
 import ModalDetail from '@/components/Modal/ModalDetail';
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/auth';
@@ -23,6 +23,9 @@ const Dashboard = async () => {
     },
     include: {
       customer: true,
+    },
+    orderBy: {
+      created_at: 'asc'
     }
   })
 
