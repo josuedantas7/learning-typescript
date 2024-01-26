@@ -13,14 +13,19 @@ import { Label } from "../ui/label"
 
 interface SelectComponentProps {
     field: string
-    clients: string[]
-    onChange: (value: string) => void
+    name: string;
+    clients: ClientesProps[]
 }
 
-export default function SelectComponent({field, clients, onChange} : SelectComponentProps) {
+interface ClientesProps{
+  id: string
+  name: string
+}
+
+export default function SelectComponent({name,field, clients} : SelectComponentProps) {
 
   return (
-    <Select onValueChange={onChange} >
+    <Select name={name} >
       <Label htmlFor={field}>{field}</Label>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={field} />
@@ -29,8 +34,8 @@ export default function SelectComponent({field, clients, onChange} : SelectCompo
         <SelectGroup>
           {
             clients.map((client) => (
-                <SelectItem key={client} value={client}>
-                    <SelectLabel>{client}</SelectLabel>
+                <SelectItem key={client.name} value={client.id}>
+                    <SelectLabel>{client.name}</SelectLabel>
                 </SelectItem>
             ))
           }

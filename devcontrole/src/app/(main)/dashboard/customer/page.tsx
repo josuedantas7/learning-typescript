@@ -22,8 +22,6 @@ const Customer = async () => {
       }
     })
 
-    console.log(customers)
-
   return (
       <div className='px-6'>
           <div className='flex justify-between items-center mb-7'>
