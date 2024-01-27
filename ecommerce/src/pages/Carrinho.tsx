@@ -1,9 +1,9 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
 import { CartContext } from '../context/CartContext'
 
 const Carrinho = () => {
-    const { cart, addCart, removeCart, setQtdTotal  } = useContext(CartContext);
+    const { cart, addCart, removeCart  } = useContext(CartContext);
 
     function formatNumber(value: number) {
         return new Intl.NumberFormat("pt-BR", {
