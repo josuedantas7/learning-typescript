@@ -6,7 +6,6 @@ import Title from "../../components/Title/Title"
 import { collection, query, getDocs, orderBy, where} from 'firebase/firestore'
 
 import { db } from '../../services/firebaseConnection'
-import { MdRunningWithErrors } from "react-icons/md"
 
 interface CarsProps{
   id: string;
@@ -28,7 +27,6 @@ interface ImageProps{
 export default function Home(){
   
   const [input,setInput] = useState<string>('')
-  const [loadImages, setLoadImages] = useState<string[]>([])
   const [cars,setCars] = useState<CarsProps[]>([])
 
   async function getCarros(){
@@ -67,7 +65,6 @@ export default function Home(){
     }
 
     setCars([]);
-    setLoadImages([]);
 
     const q = query(collection(db, "cars"), 
       where("name", ">=", input.toUpperCase()),

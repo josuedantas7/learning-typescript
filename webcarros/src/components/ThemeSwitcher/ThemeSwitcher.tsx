@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 const ThemeSwitcher = () => {
     const [iconClassName, setIconClassName] = useState('pi-moon');
 
