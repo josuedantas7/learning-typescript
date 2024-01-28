@@ -61,7 +61,6 @@ const Register = () => {
   useEffect(() => {
     async function handleLogout(){
       await signOut(auth)
-      setToastData({ info: true, message: 'Usuário deslogado com sucesso!' });
     }
     handleLogout()
   },[])

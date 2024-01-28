@@ -65,7 +65,6 @@ const Login = () => {
   useEffect(() => {
     async function handleLogout(): Promise<void> {
       await signOut(auth);
-      setToastData({ info: true, message: 'Usuário deslogado com sucesso!' });
     }
     handleLogout();
   }, []);
