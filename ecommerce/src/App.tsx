@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <h1 className='text-center text-2xl font-bold my-4'>Produtos em alta</h1>
-      <div className='flex flex-wrap gap-6 justify-between'>
+      <div className='flex flex-wrap gap-6 justify-between max-[670px]:justify-center'>
         {products && products.map((product) => (
           <CardProduct key={product.id} product={product} />
         ))}
