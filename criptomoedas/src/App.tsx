@@ -31,14 +31,13 @@ function App() {
 
   function formatNumber(numero: string | number){
     if (numero == 0) return numero
-    let newNumero = numero.replace(',', '.')
-    newNumero = parseFloat(newNumero)
+    const newNumero = parseFloat((numero as string).replace(',', '.'))
     return newNumero
   }
 
   function formatNumber2(numero: string | number){
     if (numero == 0) return numero
-    const newNumero = parseFloat(numero).toFixed(2)
+    const newNumero = parseFloat(numero as string).toFixed(2)
     return newNumero
   }
 

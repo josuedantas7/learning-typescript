@@ -21,31 +21,30 @@ const Moeda = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error,setError] = useState<boolean>(false)
 
-    async function getCoin(){
-        const response = await getOneCoin(id || '')
-        if (response === 'Moeda não encontrada') setError(true)
-        setCoin(response)
-        setLoading(false)
-    }
 
     useEffect(() => {
+        async function getCoin(){
+            const response = await getOneCoin(id || '')
+            if (response === 'Moeda não encontrada') setError(true)
+            setCoin(response)
+            setLoading(false)
+        }
         getCoin()
-    },[])
+    },[id])
 
 
     function formatNumber(numero: string | number){
         if (numero == 0) return numero
-        let newNumero = numero.replace(',', '.')
-        newNumero = parseFloat(newNumero)
+        const newNumero = parseFloat((numero as string).replace(',', '.'))
         return newNumero
-      }
+    }
     
-      function formatNumber2(numero: string | number){
-        if (numero == 0) return numero
-        const newNumero = parseFloat(numero).toFixed(2)
-        return newNumero
-      }
-    
+    function formatNumber2(numero: string | number){
+    if (numero == 0) return numero
+    const newNumero = parseFloat(numero as string).toFixed(2)
+    return newNumero
+    }
+
 
     if (error) return (
         <div className='w-full bg-slate-900 pt-12 h-screen'>
