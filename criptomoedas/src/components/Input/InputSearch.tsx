@@ -1,6 +1,5 @@
 import React from 'react'
 import { FcSearch } from "react-icons/fc";
-import { getOneCoin } from '../../Utils/criptoFunctions.js'
 import { useNavigate } from 'react-router-dom';
 
 const InputSearch = () => {
